@@ -1,0 +1,11 @@
+---
+Name: silverstripe-bugherd
+---
+IQnection\BugHerd\BugHerd:
+  webhook_path: '_bugherd'
+Page:
+  extensions:
+    - IQnection\BugHerd\Extensions\PageExtension
+SilverStripe\Control\Director:
+  rules:
+    '_bugherd': IQnection\BugHerd\Control\Listener

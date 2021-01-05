@@ -1,0 +1,26 @@
+{
+	"name": "iqnection/silverstripe-bugherd",
+	"description": "Integrates BugHerd with SilverStripe CMS",
+	"type": "silverstripe-vendormodule",
+	"keywords": ["iqnection"],
+	"license": "BSD-3-Clause",
+	"authors": [
+        {
+            "name": "IQnection",
+            "homepage": "https://www.iqnection.com"
+        }
+    ],
+	"require": {
+		"silverstripe/cms": "^4.0",
+		"beleneglorion/php-bugherd-api": "dev-master"
+	},
+	"repositories": [{
+		"type": "vcs",
+		"url": "https://github.com/iqnection-programming/php-bugherd-api.git"
+	}],
+	"autoload": {
+		"psr-4": {
+			"IQnection\\BugHerd\\": "app/src/"
+		}
+	}
+}
