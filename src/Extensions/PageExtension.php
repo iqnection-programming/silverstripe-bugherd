@@ -6,6 +6,7 @@ namespace IQnection\BugHerd\Extensions;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms;
 use IQnection\BugHerd\Model\Task;
+use IQnection\BugHerd\BugHerd;
 
 class PageExtension extends DataExtension
 {
@@ -15,12 +16,16 @@ class PageExtension extends DataExtension
 
 	public function updateCMSFields($fields)
 	{
-		$fields->addFieldToTab('Root.Bugherd', Forms\GridField\GridField::create(
-			'BugHerdTasks',
-			'BugHerd Tasks',
-			$this->owner->BugHerdTasks(),
-			Forms\GridField\GridFieldConfig_RecordViewer::create(20)
-		));
+		if (BugHerd::isEnabled())
+		{
+			$fields->addFieldToTab('Root.Bugherd', Forms\GridField\GridField::create(
+				'BugHerdTasks',
+				'BugHerd Tasks',
+				$this->owner->BugHerdTasks(),
+				Forms\GridField\GridFieldConfig_RecordViewer::create(20)
+			));
+		}
+		return $fields;
 	}
 
 	public function BugHerdIssuesList()

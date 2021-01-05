@@ -112,8 +112,13 @@ class BugHerdTasks extends BuildTask
 	public function updateTasks($request)
 	{
 		$tasks = Task::get();
-		$tasks = $tasks->Exclude('Status', ['done','closed']);
-		if ($id = $request->requestVar('id'))
+		if ($status = $request->requestVar('status'))
+		{
+			// remove spaces before and after any commas
+			$status = preg_replace('/\s*?,\s*/',',',$status);
+			$tasks = $tasks->Exclude('Status', explode(',',$status));
+		}
+		elseif ($id = $request->requestVar('id'))
 		{
 			$tasks = $tasks->Filter('ID', $id);
 		}
@@ -160,7 +165,7 @@ class BugHerdTasks extends BuildTask
 			$count--;
 			if (!$page = $task->findIssuePage())
 			{
-				$this->message('Assiciated Page NOT FOUND');
+				$this->message('Associated Page NOT FOUND');
 				continue;
 			}
 			$task->PageID = $page->ID;

@@ -10,10 +10,7 @@ use \Page;
 
 class TasksReport extends Report
 {
-	public function title()
-	{
-		return 'BugHerd Issue Pages';
-	}
+	protected $title = 'BugHerd Issue Pages';
 
 	public function group()
     {
@@ -32,9 +29,9 @@ class TasksReport extends Report
 	public function sourceRecords($params = null)
 	{
 		$tasks = Task::get();
-		if ( (is_array($params)) && (count($params)) )
+		if ( (is_array($params)) && (isset($params['Status'])) )
 		{
-			$tasks = $tasks->Filter('Status', $params['Status']);
+			$tasks = $tasks->Filter('Status', urldecode($params['Status']));
 		}
 		if (!$tasks->Count())
 		{
@@ -70,9 +67,16 @@ class TasksReport extends Report
 	public function parameterFields()
     {
     	$status = array_unique(Task::get()->Column('Status'));
+    	$keys = $status;
+    	array_walk($keys, function(&$value, $key){
+			$value = urlencode($value);
+    	});
+    	array_walk($status, function(&$value, $key){
+			$value = ucwords($value);
+    	});
         return Forms\FieldList::create(
             Forms\DropdownField::create('Status', 'Status')
-            	->setSource(array_combine($status, $status))
+            	->setSource(array_combine($keys, $status))
             	->setEmptyString('All')
         );
     }

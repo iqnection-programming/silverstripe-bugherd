@@ -25,6 +25,7 @@ class BugHerd
 		if (is_null(self::$_client))
 		{
 			self::$_client = new Client(Environment::getEnv('BUGHERD_API_KEY'));
+			self::$_client->setCheckSslCertificate(false);
 		}
 		return self::$_client;
 	}
@@ -36,6 +37,12 @@ class BugHerd
 			self::$_inst = new self;
 		}
 		return self::$_inst;
+	}
+
+	public function isEnabled()
+	{
+		$enabled = Environment::getEnv('BUGHERD_ENABLED');
+		return $enabled;
 	}
 
 	public function setProjectId($projectId)
